@@ -1,0 +1,159 @@
+/* General Body and Reset */
+body {
+  margin: 0;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  background-color: #0d0221;
+  overflow-x: hidden;
+}
+
+.landing-page {
+  text-align: center;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 50px;
+  align-items: center;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.nav .sign-in {
+  color: white;
+}
+
+.nav .sign-up {
+  background-color: white;
+  padding: 12px 24px;
+  border-radius: 100px;
+  color: #6b47dc;
+  font-weight: 600;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  background-image: url('./treesbackground.avif');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(13, 2, 33, 0.8), rgba(13, 2, 33, 0.9));
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  max-width: 800px;
+  padding: 0 20px;
+  margin-left: 120px;
+}
+
+.hero-title {
+  font-size: 4.5em;
+  margin-bottom: 20px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  text-align: left;
+  max-width: 700px;
+}
+
+.hero-subtitle {
+  font-size: 1.25em;
+  margin-bottom: 40px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+  text-align: left;
+  max-width: 600px;
+}
+
+/* Button Styles */
+.cta-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.cta-buttons .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 180px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.cta-buttons .btn.primary {
+  background-color: #FFFFFF;
+  color: #6B47DC;
+  border: none;
+}
+
+.cta-buttons .btn.primary:hover {
+  background-color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cta-buttons .btn.secondary {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 14px 30px;
+}
+
+.cta-buttons .btn.secondary:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
