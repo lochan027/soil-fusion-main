@@ -17,6 +17,7 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 allowed_origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:5000",  # Local production build
+    "https://soilfusion.netlify.app",  # Production Netlify URL
     FRONTEND_URL,  # Production frontend URL
 ]
 
