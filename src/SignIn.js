@@ -20,8 +20,8 @@ const SignIn = ({ isSignUp }) => {
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        // Auto navigate to dashboard
-        navigate('/dashboard');
+        // Auto navigate to readme instead of dashboard
+        navigate('/readme');
       } catch (err) {
         console.error('Auto-login failed:', err);
         // If auto-login fails, user can still log in manually
@@ -34,8 +34,8 @@ const SignIn = ({ isSignUp }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // For demo, accept any credentials
-      navigate('/dashboard');
+      // For demo, accept any credentials and redirect to readme
+      navigate('/readme');
     } catch (err) {
       setError('Invalid credentials');
     }

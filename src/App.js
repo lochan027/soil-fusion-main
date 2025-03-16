@@ -9,16 +9,15 @@ import Settings from './pages/Settings';
 import Devices from './Devices';
 import { ThemeProvider } from './context/ThemeContext';
 import Weather from './Weather';
-import NotificationCenter from './components/NotificationCenter';
 import Features from './pages/Features';
 import About from './pages/About';
+import ReadMe from './pages/ReadMe';
 
 const App = () => {
   return (
     <ThemeProvider>
       <Router>
         <div className="landing-page">
-          <NotificationCenter />
           <Routes>
             {/* Home page with Navbar */}
             <Route
@@ -67,6 +66,7 @@ const App = () => {
             <Route path="/weather" element={<Weather />} />
             <Route path="/features" element={<Features />} />
             <Route path="/about" element={<About />} />
+            <Route path="/readme" element={<ReadMe />} />
           </Routes>
         </div>
       </Router>

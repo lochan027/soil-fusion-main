@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconLayoutDashboard, IconUser, IconSettings, IconLogout, IconDevices, IconCloud } from '@tabler/icons-react';
+import { IconLayoutDashboard, IconUser, IconSettings, IconLogout, IconDevices, IconCloud, IconBook } from '@tabler/icons-react';
 import { Sidebar, SidebarItem } from './components/ui/Sidebar';
 import { predictSoilCondition } from './services/predictionService';
 import { DeviceDataService } from './services/DeviceDataService';
@@ -146,6 +146,11 @@ const Dashboard = () => {
       <div className="dashboard-container" style={{ paddingTop: "3rem" }}>
         <Sidebar>
           <div className="menu-items">
+            <SidebarItem
+              icon={<IconBook size={24} />}
+              text="ReadMe"
+              to="/readme"
+            />
             <SidebarItem
               icon={<IconLayoutDashboard size={24} />}
               text="Dashboard"

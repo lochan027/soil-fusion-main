@@ -5,7 +5,7 @@ import { DeviceDataService } from './services/DeviceDataService';
 import { predictSoilCondition } from './services/predictionService';
 import { IconPlus, IconRefresh, IconTrash, IconDeviceFloppy, IconChevronDown } from '@tabler/icons-react';
 import { Sidebar, SidebarItem } from './components/ui/Sidebar';
-import { IconLayoutDashboard, IconUser, IconSettings, IconLogout, IconDevices, IconCloud } from '@tabler/icons-react';
+import { IconLayoutDashboard, IconUser, IconSettings, IconLogout, IconDevices, IconCloud, IconBook } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 
 const Devices = () => {
@@ -237,6 +237,11 @@ const Devices = () => {
         <div className="dashboard-container">
             <Sidebar>
                 <div className="menu-items">
+                    <SidebarItem
+                        icon={<IconBook size={24} />}
+                        text="ReadMe"
+                        to="/readme"
+                    />
                     <SidebarItem
                         icon={<IconLayoutDashboard size={24} />}
                         text="Dashboard"
