@@ -6,6 +6,7 @@
 [build.environment]
   NODE_VERSION = "18"
   NPM_VERSION = "9"
+  PYTHON_VERSION = "3.9"
 
 [[redirects]]
   from = "/*"
@@ -19,7 +20,11 @@
 
 [functions]
   directory = "functions"
-  node_bundler = "esbuild"
+  external_node_modules = []
+  included_files = ["model/**"]
+
+[functions."*.py"]
+  runtime = "python3.9"
 
 [dev]
   command = "npm run start"
