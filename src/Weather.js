@@ -1,57 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { IconLayoutDashboard, IconUser, IconSettings, IconLogout, IconDevices, IconCloud } from '@tabler/icons-react';
 import { Sidebar, SidebarItem } from './components/ui/Sidebar';
+import { WeatherService } from './services/WeatherService';
 import './Dashboard.css';
 import './Weather.css';
 
-const API_KEY = 'deeb45792cfb4e6585623957252101';
-const BASE_URL = 'http://api.weatherapi.com/v1';
-
 const Weather = () => {
   const [weatherData, setWeatherData] = useState(null);
-  const [forecast, setForecast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    // Get user's location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          });
-        },
-        (err) => {
-          setError('Unable to get location. Using default location.');
-          setLocation({ lat: 51.5074, lon: -0.1278 }); // Default to London
-        }
-      );
-    }
+    fetchWeatherData();
   }, []);
-
-  useEffect(() => {
-    if (location) {
-      fetchWeatherData();
-    }
-  }, [location]);
 
   const fetchWeatherData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${BASE_URL}/forecast.json?key=${API_KEY}&q=${location.lat},${location.lon}&days=5&aqi=yes`
-      );
-      const data = await response.json();
       
-      if (data.error) {
-        throw new Error(data.error.message);
+      // Get location using WeatherService
+      const location = await WeatherService.getCurrentLocation();
+      
+      // Get weather data using WeatherService
+      const result = await WeatherService.getWeatherData(location.latitude, location.longitude);
+      
+      if (!result.success) {
+        throw new Error(result.error);
       }
       
-      setWeatherData(data.current);
-      setForecast(data.forecast);
+      setWeatherData(result.data);
       setError(null);
     } catch (err) {
       setError('Failed to fetch weather data. Please try again later.');
@@ -62,20 +39,25 @@ const Weather = () => {
   };
 
   const getFarmingRecommendation = (weather) => {
-    if (!weather) return '';
+    if (!weather?.current) return '';
     
     const recommendations = [];
+    const current = weather.current;
     
-    if (weather.precip_mm > 5) {
-      recommendations.push('Heavy rain expected. Consider postponing outdoor activities.');
-    }
-    
-    if (weather.temp_c > 30) {
+    if (current.temperature > 30) {
       recommendations.push('High temperature alert. Ensure proper irrigation.');
     }
     
-    if (weather.wind_kph > 20) {
-      recommendations.push('Strong winds expected. Protect sensitive crops.');
+    if (current.windSpeed.includes('mph')) {
+      const windSpeed = parseInt(current.windSpeed);
+      if (windSpeed > 15) {
+        recommendations.push('Strong winds expected. Protect sensitive crops.');
+      }
+    }
+
+    if (current.shortForecast.toLowerCase().includes('rain') || 
+        current.shortForecast.toLowerCase().includes('shower')) {
+      recommendations.push('Rain expected. Consider adjusting irrigation schedules.');
     }
 
     return recommendations.length > 0 ? recommendations.join(' ') : 'Weather conditions are suitable for farming activities.';
@@ -129,15 +111,14 @@ const Weather = () => {
               <div className="current-weather">
                 <h2>Current Weather</h2>
                 <div className="weather-info">
-                  <img src={weatherData.condition.icon} alt={weatherData.condition.text} />
                   <div className="temperature">
-                    <h3>{weatherData.temp_c}°C</h3>
-                    <p>{weatherData.condition.text}</p>
+                    <h3>{weatherData.current.temperature}°{weatherData.current.temperatureUnit}</h3>
+                    <p>{weatherData.current.shortForecast}</p>
                   </div>
                   <div className="details">
-                    <p>Humidity: {weatherData.humidity}%</p>
-                    <p>Wind: {weatherData.wind_kph} km/h</p>
-                    <p>Precipitation: {weatherData.precip_mm} mm</p>
+                    <p>Humidity: {weatherData.current.humidity}%</p>
+                    <p>Wind: {weatherData.current.windSpeed} {weatherData.current.windDirection}</p>
+                    <p>{weatherData.current.detailedForecast}</p>
                   </div>
                 </div>
                 <div className="farming-recommendation">
@@ -146,21 +127,18 @@ const Weather = () => {
                 </div>
               </div>
 
-              {forecast && (
-                <div className="forecast">
-                  <h2>5-Day Forecast</h2>
-                  <div className="forecast-grid">
-                    {forecast.forecastday.map((day) => (
-                      <div key={day.date} className="forecast-day">
-                        <h4>{new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}</h4>
-                        <img src={day.day.condition.icon} alt={day.day.condition.text} />
-                        <p className="temp">{day.day.avgtemp_c}°C</p>
-                        <p className="condition">{day.day.condition.text}</p>
-                      </div>
-                    ))}
-                  </div>
+              <div className="forecast">
+                <h2>7-Day Forecast</h2>
+                <div className="forecast-grid">
+                  {weatherData.daily.map((day) => (
+                    <div key={day.startTime} className="forecast-day">
+                      <h4>{new Date(day.startTime).toLocaleDateString('en-US', { weekday: 'short' })}</h4>
+                      <p className="temp">{day.temperature}°{day.temperatureUnit}</p>
+                      <p className="condition">{day.shortForecast}</p>
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
             </>
           )}
         </div>
