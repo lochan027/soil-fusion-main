@@ -106,15 +106,14 @@ const Dashboard = () => {
       temperature: { low: 15, high: 30 },
       ph: { low: 6.0, high: 7.5 },
       oxygen: { low: 15, high: 25 },
-      nitrogen: { low: 20, high: 50 },
-      phosphorus: { low: 20, high: 50 },
-      potassium: { low: 20, high: 50 }
+      nitrogen: { low: 20, high: 140 },
+      phosphorus: { low: 10, high: 50 },
+      potassium: { low: 20, high: 200 }
     };
 
     const threshold = thresholds[type];
-    if (value < threshold.low) return 'text-red-500';
-    if (value > threshold.high) return 'text-red-500';
-    return 'text-green-500';
+    if (value >= threshold.low && value <= threshold.high) return 'text-green-500';
+    return 'text-red-500';
   };
 
   const getStatusMessage = (value, type) => {
